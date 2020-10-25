@@ -647,7 +647,11 @@ runReview : Model -> Model
 runReview model =
     let
         { errors, rules, projectData } =
-            Rule.reviewV2 model.rules model.projectData model.project
+            Rule.reviewV3
+                { inFixMode = model.fixMode /= Mode_DontFix }
+                model.rules
+                model.projectData
+                model.project
     in
     { model
         | reviewErrors = errors
