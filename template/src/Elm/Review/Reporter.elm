@@ -489,7 +489,10 @@ formatReports detailsMode files =
             []
 
         [ file ] ->
-            formatReportForFileWithExtract detailsMode Reviewing file
+            List.concat
+                [ formatReportForFileWithExtract detailsMode Reviewing file
+                , fileReminder file.path
+                ]
 
         firstFile :: secondFile :: restOfFiles ->
             List.concat
@@ -509,6 +512,16 @@ fileSeparator (FilePath pathAbove) (FilePath pathBelow) =
         |> Text.from
         |> Text.inRed
     , Text.from "\n\n\n"
+    ]
+
+
+fileReminder : FilePath -> List Text
+fileReminder (FilePath path) =
+    [ Text.from <| "\n\n" ++ String.repeat (73 - String.length path) " "
+    , (path ++ "  ↑")
+        ++ "\n====o======================================================================o===="
+        |> Text.from
+        |> Text.inRed
     ]
 
 
