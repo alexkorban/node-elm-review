@@ -137,7 +137,7 @@ mkdir -p "$TMP"
 if [ "$1" == "record" ]
 then
   createTest=runAndRecord
-  rm -rf "$SNAPSHOTS" &> /dev/null
+  # rm -rf "$SNAPSHOTS" &> /dev/null
   mkdir -p "$SNAPSHOTS"
 else
   createTest=runCommandAndCompareToSnapshot
