@@ -56,7 +56,7 @@ function runAndRecord {
     local ARGS=$3
     local FILE=$4
     echo -e "\x1B[33m- $TITLE\x1B[0m: \x1B[34m elm-review --FOR-TESTS $ARGS\x1B[0m"
-    eval "$LOCAL_COMMAND$AUTH --FOR-TESTS $ARGS" 2>&1 | $REPLACE_SCRIPT \
+    eval "$LOCAL_COMMAND$AUTH --force-build --FOR-TESTS $ARGS" 2>&1 | $REPLACE_SCRIPT \
         > "$SNAPSHOTS/$FILE"
 }
 
@@ -144,9 +144,9 @@ else
   echo -e '\x1B[33m-- Testing runs\x1B[0m'
 fi
 
-PACKAGE_PATH=$(npm pack -s ../ | tail -n 1)
-echo "Package path is $PACKAGE_PATH"
-npm install -g $PACKAGE_PATH
+# PACKAGE_PATH=$(npm pack -s ../ | tail -n 1)
+# echo "Package path is $PACKAGE_PATH"
+# npm install -g $PACKAGE_PATH
 
 
 # Version
