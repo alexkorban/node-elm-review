@@ -596,12 +596,18 @@ If I am mistaken about the nature of problem, please open a bug report at https:
                     ( model, Cmd.none )
 
                 Ok suppressedErrors ->
-                    ( { model
-                        | suppressedErrors = suppressedErrors
-                        , originalNumberOfSuppressedErrors = List.sum (Dict.values suppressedErrors)
-                      }
-                    , Cmd.none
-                    )
+                    -- TODO Make report only when a report has already been made previously
+                    makeReport Dict.empty
+                        { model
+                            | suppressedErrors = suppressedErrors
+                            , reviewErrorsAfterSuppression =
+                                if Dict.isEmpty suppressedErrors || List.isEmpty model.reviewErrors then
+                                    model.reviewErrors
+
+                                else
+                                    removeSuppressedErrors suppressedErrors model.reviewErrors
+                            , originalNumberOfSuppressedErrors = List.sum (Dict.values suppressedErrors)
+                        }
 
         ReceivedLinks json ->
             case Decode.decodeValue (Decode.dict Decode.string) json of
