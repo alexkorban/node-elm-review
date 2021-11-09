@@ -150,3 +150,11 @@ test('Running with --unsuppress-rules should report suppressed errors for that r
   );
   expect(output).toMatchFile(testName('suppressed-errors-unsuppress-rules'));
 });
+
+test('Running with --check when there are no uncommitted changes should exit with code 0', async () => {
+  const output = await TestCli.run(
+    'suppress --check',
+    {project: 'project-with-suppressed-errors'}
+  );
+  expect(output).toEqual('');
+});
