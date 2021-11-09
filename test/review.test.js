@@ -152,7 +152,7 @@ test('Running with --unsuppress-rules should report suppressed errors for that r
   expect(output).toMatchFile(testName('suppressed-errors-unsuppress-rules'));
 });
 
-test('Running with --check when there are no uncommitted changes should not exit with failure', async () => {
+test('Running with "suppress --check" when there are no uncommitted changes should not exit with failure', async () => {
   const output = await TestCli.run(
     'suppress --check',
     {project: 'project-with-suppressed-errors'}
@@ -160,17 +160,14 @@ test('Running with --check when there are no uncommitted changes should not exit
   expect(output).toEqual('');
 });
 
-test('Running with --check when there are uncommitted changes should exit with failure', async () => {
-  // Create uncommitted suppression files
-  await TestCli.run(
-    'suppress',
-    {project: 'project-with-errors'}
-  );
+test('Running with "suppress --check" when there are uncommitted changes should exit with failure', async () => {
+  child_process.execSync(`rm -r ${path.resolve(__dirname, './project-with-suppressed-errors/review/suppressed/NoUnused.Variables.json')}`)
+
   const output = await TestCli.runAndExpectError(
     'suppress --check',
-    {project: 'project-with-errors'}
+    {project: 'project-with-suppressed-errors'}
   );
   // Remove uncommitted suppression files
-  child_process.execSync(`rm -r ${path.resolve(__dirname, './project-with-errors/review/suppressed')}`)
+  child_process.execSync(`git checkout HEAD ${path.resolve(__dirname, './project-with-suppressed-errors/review/suppressed/')}`)
   expect(output).toMatchFile(testName('suppressed-errors-check-with-uncommitted-changes'));
 });
