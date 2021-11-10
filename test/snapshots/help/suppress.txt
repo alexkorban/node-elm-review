@@ -46,3 +46,9 @@ options to help you:
         Include suppressed errors in the error report for the listed rules.
         Specify the rules by their name, and separate them by commas.
 
+    --check-after-tests
+        Checks whether there are uncommitted changes. Running elm-review may
+        cause suppression files to be updated, which people can forget to commit
+        before making a pull request. Running elm-review suppress with this flag
+        at the end of your test suite makes sure these files stay up to date.
+
